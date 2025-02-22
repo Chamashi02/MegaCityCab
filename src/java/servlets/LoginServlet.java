@@ -1,5 +1,8 @@
-package com.user;
+package servlets;
 
+import dao.UserDAO;
+import models.Role;
+import models.User;
 import java.io.IOException;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -22,7 +25,7 @@ public class LoginServlet extends HttpServlet {
                 //Hash th entered password using SHA-256
                 String hashedPassword = hashPassword(password);
                 
-                List<User> userDetails = UserDBUtil.validate(username, hashedPassword);
+                List<User> userDetails = UserDAO.validate(username, hashedPassword);
                 
                 if (!userDetails.isEmpty()){
                     User user = userDetails.get(0);

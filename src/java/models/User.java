@@ -1,7 +1,5 @@
-package com.user;
+package models;
 
-enum Role {
-    admin, customer}
 
 public class User {
     private int id;
