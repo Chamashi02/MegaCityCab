@@ -10,7 +10,7 @@
     <title>View Drivers</title>
 </head>
 <body>
-    <h2>Driver List</h2>
+    <h2>Drivers List</h2>
     <table border="1">
         <thead>
             <tr>

@@ -10,11 +10,19 @@
     </servlet>
     <servlet>
         <servlet-name>AddDriverServlet</servlet-name>
-        <servlet-class>servlets.AddDriversServlet</servlet-class>
+        <servlet-class>servlets.AddDriverServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewDriversServlet</servlet-name>
         <servlet-class>servlets.ViewDriversServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCabServlet</servlet-name>
+        <servlet-class>servlets.AddCabServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCabsServlet</servlet-name>
+        <servlet-class>servlets.ViewCabsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>ViewDriversServlet</servlet-name>
         <url-pattern>/viewDrivers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCabServlet</servlet-name>
+        <url-pattern>/AddCab</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCabsServlet</servlet-name>
+        <url-pattern>/viewCabs</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
