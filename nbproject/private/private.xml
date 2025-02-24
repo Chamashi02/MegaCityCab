@@ -4,15 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/LoginServlet.java</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/admindashboard.jsp</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/register.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/admindashboard.css</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/index.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/com/user/LoginServlet.java</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/com/user/UserDBUtil.java</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/style.css</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/com/user/RegisterServlet.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/models/User.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/utils/DBConnection.java</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/login.jsp</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/RegisterServlet.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/models/Role.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/dao/UserDAO.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/admindashboard.css</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/style.css</file>
         </group>
     </open-files>
 </project-private>
