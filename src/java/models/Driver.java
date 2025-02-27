@@ -3,15 +3,18 @@ package models;
 public class Driver {
     
     private int driverId;
-    private String name, licenseNumber, phoneNumber, address, status;
+    private String name, licenseNumber, phoneNumber, address, status, cabNumber,cabModel;
 
-    public Driver(int driverId, String name, String licenseNumber, String phoneNumber, String address, String status) {
+
+    public Driver(int driverId, String name, String licenseNumber, String phoneNumber, String address, String status, String cabNumber, String cabModel) {
         this.driverId = driverId;
         this.name = name;
         this.licenseNumber = licenseNumber;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.status = status;
+        this.cabNumber = cabNumber;
+        this.cabModel = cabModel;
     }
 
     public int getDriverId() {
@@ -61,5 +64,22 @@ public class Driver {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getCabNumber() {
+        return cabNumber;
+    }
+
+    public void setCabNumber(String cabNumber) {
+        this.cabNumber = cabNumber;
+    }
+
+    public String getCabModel() {
+        return cabModel;
+    }
+
+    public void setCabModel(String cabModel) {
+        this.cabModel = cabModel;
+    }
+    
     
 }
