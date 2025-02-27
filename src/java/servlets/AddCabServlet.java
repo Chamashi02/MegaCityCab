@@ -20,7 +20,9 @@ public class AddCabServlet extends HttpServlet {
         String cabType = request.getParameter("cab_type");
         String capacity = request.getParameter("capacity");
         
-        Cab cab = new Cab (0, cabNumber, model, cabType, capacity, "available");
+        Integer driverId = null;
+        
+        Cab cab = new Cab (0, cabNumber, model, cabType, capacity, "available", driverId);
         boolean success = CabDAO.addCab(cab);
         
         response.sendRedirect("viewCabs?status=" + (success ? "success" : "error"));

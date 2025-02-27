@@ -23,12 +23,12 @@ public class DriverDAO {
 
     public List<Driver> getAllDrivers() {
         List<Driver> drivers = new ArrayList<>();
-        String query = "SELECT * FROM driver";
+        String query = "SELECT d.*, c.cab_number, c.model FROM driver d LEFT JOIN cabs c ON d.cab_id = c.cab_id";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-            
+
             while (rs.next()) {
                 Driver driver = new Driver(
                     rs.getInt("driver_id"),
@@ -36,17 +36,18 @@ public class DriverDAO {
                     rs.getString("license_number"),
                     rs.getString("phone_number"),
                     rs.getString("address"),
-                    rs.getString("status")
+                    rs.getString("status"),
+                    rs.getString("cab_number"),  // Fetch cab number
+                    rs.getString("model")       // Fetch cab model
                 );
                 drivers.add(driver);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         return drivers;
     }
+
 
     public static boolean deleteDriver(int driverId) {
         String sql = "DELETE FROM driver WHERE driver_id = ?";
@@ -59,4 +60,65 @@ public class DriverDAO {
         }
         return false;
     }
+    
+    // Get available drivers
+    public List<Driver> getAvailableDrivers() {
+        List<Driver> drivers = new ArrayList<>();
+        String query = "SELECT d.*, c.cab_number, c.model FROM driver d " +
+                       "LEFT JOIN cabs c ON d.cab_id = c.cab_id " +
+                       "WHERE d.status = 'available'";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Driver driver = new Driver(
+                    rs.getInt("driver_id"),
+                    rs.getString("name"),
+                    rs.getString("license_number"),
+                    rs.getString("phone_number"),
+                    rs.getString("address"),
+                    rs.getString("status"),
+                    rs.getString("cab_number"),  // Fetch cab number
+                    rs.getString("model")        // Fetch cab model
+                );
+                drivers.add(driver);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return drivers;
+    }
+
+    // Get driver by ID
+    public Driver getDriverById(int driverId) {
+        Driver driver = null;
+        String query = "SELECT * FROM driver WHERE driver_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, driverId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    driver = new Driver(
+                        rs.getInt("driver_id"),
+                        rs.getString("name"),
+                        rs.getString("license_number"),
+                        rs.getString("phone_number"),
+                        rs.getString("address"),
+                        rs.getString("status"),
+                            null,
+                            null
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return driver;
+    }
+
+
 }

@@ -20,6 +20,8 @@
                 <th>Phone Number</th>
                 <th>Address</th>
                 <th>Status</th>
+                <th>Cab Number</th>
+                <th>Cab Model</th>
             </tr>
         </thead>
         <tbody>
@@ -35,13 +37,15 @@
                 <td><%= driver.getPhoneNumber() %></td>
                 <td><%= driver.getAddress() %></td>
                 <td><%= driver.getStatus() %></td>
+                <td><%= (driver.getCabNumber() != null) ? driver.getCabNumber() : "Not Assigned" %></td>
+                <td><%= (driver.getCabModel() != null) ? driver.getCabModel() : "Not Assigned" %></td>
             </tr>
             <%
                     }
                 } else {
             %>
             <tr>
-                <td colspan="6">No drivers found.</td>
+                <td colspan="8">No drivers found.</td>
             </tr>
             <%
                 }

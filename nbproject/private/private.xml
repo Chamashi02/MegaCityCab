@@ -3,19 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/LoginServlet.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/AddCabServlet.java</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/admindashboard.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/register.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/index.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/models/User.java</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/utils/DBConnection.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/useraccount.css</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/login.jsp</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/RegisterServlet.java</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/models/Role.java</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/dao/UserDAO.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/dao/CabDAO.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/models/Cab.java</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/viewDrivers.jsp</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/viewCabs.jsp</file>
             <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/admindashboard.css</file>
-            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/css/style.css</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/addCab.jsp</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/addDriver.jsp</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/web/useraccount.jsp</file>
+            <file>file:/C:/Users/Chamashi/Documents/Netbeans%20Projects/MegaCityCab/src/java/servlets/ViewCabsServlet.java</file>
         </group>
     </open-files>
 </project-private>

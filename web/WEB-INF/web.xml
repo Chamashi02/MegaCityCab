@@ -24,6 +24,10 @@
         <servlet-name>ViewCabsServlet</servlet-name>
         <servlet-class>servlets.ViewCabsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <servlet-class>servlets.AssignDriverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>ViewCabsServlet</servlet-name>
         <url-pattern>/viewCabs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <url-pattern>/AssignDriverServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

@@ -8,18 +8,28 @@ public class Cab {
     private String cabType;
     private String capacity;
     private String status; 
+    private Integer driverId;
 
-    public Cab(int cabId, String cabNumber, String model, String cabType, String capacity, String status) {
+    public Cab(int cabId, String cabNumber, String model, String cabType, String capacity, String status, Integer driverId) {
         this.cabId = cabId;
         this.cabNumber = cabNumber;
         this.model = model;
         this.cabType = cabType;
         this.capacity = capacity;
         this.status = status;
+        this.driverId = driverId;
     }
 
     public int getCabId() {
         return cabId;
+    }
+
+    public Integer getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Integer driverId) {
+        this.driverId = driverId;
     }
 
     public void setCabId(int cabId) {
