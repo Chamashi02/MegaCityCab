@@ -73,6 +73,24 @@ public class CabDAO {
     return false;
     }
 
+    
+    public boolean unassignDriverFromCab(int cabId, int driverId) {
+    String sql = "UPDATE cabs SET driver_id = NULL WHERE cab_id = ?";
+    String driverSql = "UPDATE driver SET cab_id = NULL, status = 'available' WHERE driver_id = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         PreparedStatement driverStmt = conn.prepareStatement(driverSql)) {
+
+        pstmt.setInt(1, cabId);
+        driverStmt.setInt(1, driverId);
+
+        return pstmt.executeUpdate() > 0 && driverStmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
 }
     
