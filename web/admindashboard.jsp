@@ -14,6 +14,8 @@
                 <div class="nav-buttons">
                     <a href="addCab.jsp" class="nav-button">Add Cab</a>
                     <a href="addDriver.jsp" class="nav-button">Add Driver</a>
+                    <a href="viewCabs" class="nav-button">View Cabs</a>
+                    <a href="viewDrivers" class="nav-button">View Drivers</a>
                     <a href="manageBookings.jsp" class="nav-button">Manage Bookings</a>
                     <a href="viewReports.jsp" class="nav-button">View Reports</a>
                 </div>

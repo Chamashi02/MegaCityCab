@@ -31,13 +31,13 @@ public class LoginServlet extends HttpServlet {
                     User user = userDetails.get(0);
                     
                     HttpSession session = request.getSession();
-                    session.setAttribute("userDetails", userDetails);
+                    session.setAttribute("user", user);
                     
                     //Check the role
                     if(user.getRole().equals(Role.admin)){
                     response.sendRedirect("admindashboard.jsp");
                     }else{
-                        response.sendRedirect("useraccount.jsp");
+                        response.sendRedirect("bookTrip.jsp");
                     }
                 }else{
                     response.sendRedirect("login.jsp?error=Invalid credentials");

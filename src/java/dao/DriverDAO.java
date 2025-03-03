@@ -37,8 +37,8 @@ public class DriverDAO {
                     rs.getString("phone_number"),
                     rs.getString("address"),
                     rs.getString("status"),
-                    rs.getString("cab_number"),  // Fetch cab number
-                    rs.getString("model")       // Fetch cab model
+                    rs.getString("cab_number"), 
+                    rs.getString("model")      
                 );
                 drivers.add(driver);
             }
@@ -109,8 +109,8 @@ public class DriverDAO {
                         rs.getString("phone_number"),
                         rs.getString("address"),
                         rs.getString("status"),
-                            null,
-                            null
+                        null,
+                        null
                     );
                 }
             }

@@ -1,8 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="models.Cab "%>
-<%@ page import="models.Driver "%>
-<%@ page import="dao.DriverDAO "%>
+<%@ page import="models.Cab" %>
+<%@ page import="models.Driver" %>
+<%@ page import="dao.DriverDAO" %>
+<%@ page import="dao.CabDAO" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +32,7 @@
                     <th>Capacity</th>
                     <th>Status</th>
                     <th>Driver</th>
-                    <th>Assign Driver</th>
+                    <th>Assign/Unassign Driver</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,10 +59,13 @@
                         <% if (cab.getDriverId() == null) { %>
                             <button onclick="openPopup(<%= cab.getCabId() %>)">Assign Driver</button>
                         <% } else { %>
-                            Assigned
+                            <form action="UnassignDriverServlet" method="post" style="display:inline;">
+                                <input type="hidden" name="cabId" value="<%= cab.getCabId() %>">
+                                <input type="hidden" name="driverId" value="<%= cab.getDriverId() %>">
+                                <button type="submit">Unassign Driver</button>
+                            </form>
                         <% } %>
                     </td>
-
 
                 </tr>
                 <% 
@@ -104,4 +108,3 @@
         </style>
     </body>
 </html>
-
