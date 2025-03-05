@@ -32,6 +32,10 @@
         <servlet-name>UnassignDriverServlet</servlet-name>
         <servlet-class>servlets.UnassignDriverServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>servlets.BookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -66,6 +70,10 @@
     <servlet-mapping>
         <servlet-name>UnassignDriverServlet</servlet-name>
         <url-pattern>/UnassignDriverServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/BookingServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

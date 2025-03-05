@@ -1,6 +1,5 @@
 package models;
 
-
 public class User {
     private int id;
     private String name;
@@ -24,7 +23,7 @@ public class User {
         this.role = role;
     }
 
-    public int getId() {
+    public int getId() { // FIXED: This is the correct method to get user ID
         return id;
     }
 
@@ -59,7 +58,4 @@ public class User {
     public Role getRole() {
         return role;
     }
-    
-    
-    
 }
