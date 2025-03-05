@@ -1,49 +1,106 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="models.Cab" %>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ page import="models.User" %>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="dao.LocationDAO" %>
+<%@ page import="models.Location" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Book a Trip</title>
+        <title>Request a Cab</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                text-align: center;
+            }
+            .container {
+                width: 50%;
+                margin: auto;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 0px 10px gray;
+            }
+            input, select, button {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .result {
+                margin-top: 20px;
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
-        <h2>Book a Trip</h2>
+        <div class="container">
+            <h2>Request a Cab</h2>
+            <form action="BookingServlet" method="post">
+                <label>Select Cab Type:</label>
+                <select name="cabType" id="cabType" onchange="calculateFare()">
+                    <option value="Sedan">Sedan</option>
+                    <option value="Mini">Mini</option>
+                    <option value="SUV">SUV</option>
+                </select>
 
-        <%
-            // Ensure user is logged in
-            HttpSession userSession = request.getSession(false);
-            User user = (User) userSession.getAttribute("user");
+                <label>Pickup Location:</label>
+                <select name="pickupLocation" id="pickupLocation" onchange="calculateFare()">
+                    <%
+                        List<Location> locations = LocationDAO.getAllLocations();
+                        for (Location location : locations) {
+                    %>
+                        <option value="<%= location.getName() %>"><%= location.getName() %></option>
+                    <%
+                        }
+                    %>
+                </select>
 
-            if (user == null) {
-                response.sendRedirect("login.jsp");
-                return;
+                <label>Drop-off Location:</label>
+                <select name="dropoffLocation" id="dropoffLocation" onchange="calculateFare()">
+                    <%
+                        for (Location location : locations) {
+                    %>
+                        <option value="<%= location.getName() %>"><%= location.getName() %></option>
+                    <%
+                        }
+                    %>
+                </select>
+
+                <label>Pickup Time:</label>
+                <input type="datetime-local" name="pickupTime" required>
+
+                <label>Distance (km):</label>
+                <input type="text" id="distance" readonly>
+
+                <label>Estimated Fare (LKR):</label>
+                <input type="text" id="estimatedFare" name="estimatedFare" readonly>
+
+                <br><br>
+                <button type="submit">Request Booking</button>
+            </form>
+        </div>
+
+        <script>
+            function calculateFare() {
+                var cabType = document.getElementById("cabType").value;
+                var pickupLocation = document.getElementById("pickupLocation").value;
+                var dropoffLocation = document.getElementById("dropoffLocation").value;
+
+                if (!pickupLocation || !dropoffLocation) return;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "BookingServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        document.getElementById("distance").value = response.distance + " km";
+                        document.getElementById("estimatedFare").value = response.estimatedFare + " LKR";
+                    }
+                };
+
+                var params = "cabType=" + cabType + "&pickupLocation=" + pickupLocation + "&dropoffLocation=" + dropoffLocation + "&action=calculateFare";
+                xhr.send(params);
             }
-        %>
-
-        <form action="BookTripServlet" method="post">
-            <label for="pickup">Pickup Location:</label>
-            <input type="text" id="pickup" name="pickup" required><br>
-
-            <label for="dropoff">Dropoff Location:</label>
-            <input type="text" id="dropoff" name="dropoff" required><br>
-
-            <label for="cabType">Select Cab Type:</label>
-            <select id="cabType" name="cabType" required>
-                <option value="Sedan">Sedan</option>
-                <option value="SUV">SUV</option>
-                <option value="Mini">Mini</option>
-            </select><br>
-
-            <label for="tripDate">Trip Date:</label>
-            <input type="date" id="tripDate" name="tripDate" required><br>
-
-            <label for="pickupTime">Pickup Time:</label>
-            <input type="time" id="pickupTime" name="pickupTime" required><br>
-
-            <button type="submit">Request Trip</button>
-        </form>
+        </script>
     </body>
 </html>
