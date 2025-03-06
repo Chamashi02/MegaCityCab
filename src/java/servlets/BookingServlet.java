@@ -126,5 +126,7 @@ public class BookingServlet extends HttpServlet {
 
         return finalFare;
     }
+    
+    
 
 }
