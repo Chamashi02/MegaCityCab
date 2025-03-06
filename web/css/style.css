@@ -1,6 +1,7 @@
 /* General styles */
 body {
     font-family: Arial, sans-serif;
+    background: url('../assets/car3.jpeg') no-repeat center center/cover;
     background-color: #f4f4f4;
     display: flex;
     justify-content: center;
@@ -56,7 +57,7 @@ body {
     width: 100%;
     padding: 10px;
     margin-top: 15px;
-    background-color: #007bff;
+    background-color: rgba(255, 204, 0, 0.9);
     border: none;
     color: white;
     font-size: 16px;
@@ -66,7 +67,7 @@ body {
 }
 
 .form-button:hover {
-    background-color: #0056b3;
+    background-color: rgba(255, 170, 0, 0.9);
 }
 
 /* Error message */
