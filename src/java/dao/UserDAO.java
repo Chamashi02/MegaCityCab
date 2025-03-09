@@ -12,19 +12,17 @@ import utils.DBConnection;
 
 public class UserDAO {
     
-    public static List<User> validate (String userName, String hashedPassword){
-    
+    // Validate user credentials
+    public static List<User> validate(String userName, String hashedPassword){
         ArrayList<User> usr = new ArrayList<>();
-
-        //Validate
 
         try (Connection con = DBConnection.getConnection();
             Statement stmt = con.createStatement()) {
 
-            String sql = "SELECT * FROM megacitycab.user WHERE username='"+userName+"' AND password = '"+hashedPassword+"'";
+            String sql = "SELECT * FROM megacitycab.user WHERE username='" + userName + "' AND password = '" + hashedPassword + "'";
             ResultSet rs = stmt.executeQuery(sql);
 
-            if(rs.next()){
+            if (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 String userU = rs.getString(3);
@@ -35,18 +33,46 @@ public class UserDAO {
                 String nic = rs.getString(8);
                 String roleStr = rs.getString(9);
 
-                //Convert role from String to Role enum
+                // Convert role from String to Role enum
                 Role role = Role.valueOf(roleStr.toLowerCase());
 
-                User u = new User (id,name,userU,passU,email,phone,address,nic,role);
+                User u = new User(id, name, userU, passU, email, phone, address, nic, role);
                 usr.add(u);
             }
-     
-     
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return usr;
+    }
+
+    // Add method to get User by ID
+    public static User getUserById(int userId) {
+        User user = null;
+        try (Connection con = DBConnection.getConnection();
+            Statement stmt = con.createStatement()) {
+
+            String sql = "SELECT * FROM megacitycab.user WHERE id=" + userId;
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                String name = rs.getString(2);
+                String userU = rs.getString(3);
+                String passU = rs.getString(4);
+                String email = rs.getString(5);
+                int phone = rs.getInt(6);
+                String address = rs.getString(7);
+                String nic = rs.getString(8);
+                String roleStr = rs.getString(9);
+
+                // Convert role from String to Role enum
+                Role role = Role.valueOf(roleStr.toLowerCase());
+
+                user = new User(userId, name, userU, passU, email, phone, address, nic, role);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

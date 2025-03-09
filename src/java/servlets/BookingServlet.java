@@ -85,7 +85,7 @@ public class BookingServlet extends HttpServlet {
             );
             double estimatedFare = calculateFare(cabType, distance);
 
-            Booking booking = new Booking(userId, cabType, pickupLocationName, dropoffLocationName, pickupTime, "Pending", estimatedFare, distance);
+            Booking booking = new Booking(0, userId, cabType, pickupLocationName, dropoffLocationName, pickupTime, "Pending",null, estimatedFare, distance);
             boolean success = BookingDAO.addBooking(booking);
 
             if (success) {

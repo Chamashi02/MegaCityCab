@@ -16,16 +16,19 @@ public class Booking {
     private String dropoffLocation;
     private String pickupTime;
     private String status;
+    private Integer cabId;
     private double estimatedFare;
     private double distance;
 
-    public Booking(int userId, String cabType, String pickupLocation, String dropoffLocation, String pickupTime, String status, double estimatedFare, double distance) {
+    public Booking(int bookingId, int userId, String cabType, String pickupLocation, String dropoffLocation, String pickupTime, String status,Integer cabId, double estimatedFare, double distance) {
+        this.bookingId = bookingId;
         this.userId = userId;
         this.cabType = cabType;
         this.pickupLocation = pickupLocation;
         this.dropoffLocation = dropoffLocation;
         this.pickupTime = pickupTime;
         this.status = status;
+        this.cabId = cabId;
         this.estimatedFare = estimatedFare;
         this.distance = distance;
     }
@@ -100,6 +103,14 @@ public class Booking {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public Integer getCabId() {
+        return cabId;
+    }
+
+    public void setCabId(Integer cabId) {
+        this.cabId = cabId;
     }
     
     

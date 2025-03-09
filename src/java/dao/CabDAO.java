@@ -91,6 +91,40 @@ public class CabDAO {
     }
     return false;
 }
+    
+public static boolean assignCabToBooking(int cabId, int bookingId) {
+    System.out.println("assignCabToBooking called");
+    String bookingSql = "UPDATE bookings SET cab_id = ? WHERE booking_id = ?";
+    String cabSql = "UPDATE cabs SET status = 'busy' WHERE cab_id = ?";
+    
+    System.out.println("Assigning Cab ID: " + cabId + " to Booking ID: " + bookingId);
+    
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement bookingStmt = conn.prepareStatement(bookingSql);
+         PreparedStatement cabStmt = conn.prepareStatement(cabSql)) {
+
+        // Update booking with the cab id
+        bookingStmt.setInt(1, cabId);
+        bookingStmt.setInt(2, bookingId);
+        
+        // Update cab status to 'busy'
+        cabStmt.setInt(1, cabId);
+
+        boolean bookingUpdated = bookingStmt.executeUpdate() > 0;
+        boolean cabUpdated = cabStmt.executeUpdate() > 0;
+
+        if (bookingUpdated && cabUpdated) {
+            return true;
+        } else {
+            System.out.println("Failed to update booking or cab status.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
 
 }
     
