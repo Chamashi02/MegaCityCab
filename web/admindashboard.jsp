@@ -1,25 +1,118 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin Dashboard</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap 5 & FontAwesome CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Adjust body to accommodate sidebar */
+        .body-wrap {
+            margin-left: 17%;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body id="page-top">
+        <!-- Include Sidebar -->
+    <jsp:include page="sidebar.jsp" />
     
-    <body class="body-container">
-        <div class="admin-container">
-            <h2 class="admin-title">Admin Dashboard</h2>
-            
-             <div class="admin-dashboard">
-                <div class="nav-buttons">
-                    <a href="addCab.jsp" class="nav-button">Add Cab</a>
-                    <a href="addDriver.jsp" class="nav-button">Add Driver</a>
-                    <a href="viewCabs" class="nav-button">View Cabs</a>
-                    <a href="viewDrivers" class="nav-button">View Drivers</a>
-                    <a href="manageBookings.jsp" class="nav-button">Manage Bookings</a>
-                    <a href="viewReports.jsp" class="nav-button">View Reports</a>
+    <div class="body-wrap">
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-0">
+        <h1 class="h3 mb-4 text-gray-800">WELCOME ADMIN</h1>
+
+        <div class="row">
+            <!-- Total Drivers -->
+            <div class="col-md-3">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Drivers
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-id-card fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Cabs -->
+            <div class="col-md-3">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Total Cabs
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-car fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Bookings -->
+            <div class="col-md-3">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Active Bookings
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests -->
+            <div class="col-md-3">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Pending Requests
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+
+    </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Bootstrap & jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

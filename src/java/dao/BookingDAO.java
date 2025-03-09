@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class BookingDAO {
     public static boolean addBooking(Booking booking) {
-        String query = "INSERT INTO bookings (user_id, cab_type, pickup_location, dropoff_location, pickup_time, status, price, distance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO bookings (user_id, cab_type, pickup_location, dropoff_location, pickup_time, status, cab_id, price, distance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(query)) {
@@ -23,8 +23,9 @@ public class BookingDAO {
             pst.setString(4, booking.getDropoffLocation());
             pst.setString(5, booking.getPickupTime());
             pst.setString(6, booking.getStatus());
-            pst.setDouble(7, booking.getEstimatedFare());
-            pst.setDouble(8, booking.getDistance());
+            pst.setInt(7, booking.getCabId());
+            pst.setDouble(8, booking.getEstimatedFare());
+            pst.setDouble(9, booking.getDistance());
 
             int rowsInserted = pst.executeUpdate();
             return rowsInserted > 0;
@@ -65,13 +66,17 @@ public class BookingDAO {
             rs = stmt.executeQuery();
 
             while (rs.next()) {
+                Integer cabId = rs.getObject("cab_id") != null ? rs.getInt("cab_id") : null;
+                
                 Booking booking = new Booking(
+                        rs.getInt("booking_id"),
                         rs.getInt("user_id"),
                         rs.getString("cab_type"),
                         rs.getString("pickup_location"),
                         rs.getString("dropoff_location"),
                         rs.getString("pickup_time"),
                         rs.getString("status"),
+                        cabId,
                         rs.getDouble("price"),
                         rs.getDouble("distance")
                 );
