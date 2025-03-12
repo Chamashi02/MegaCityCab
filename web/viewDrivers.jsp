@@ -40,6 +40,7 @@
                         <th>Status</th>
                         <th>Cab Number</th>
                         <th>Cab Model</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,7 @@
                         <td><span class="badge bg-info text-dark"><%= driver.getStatus() %></span></td>
                         <td><%= (driver.getCabNumber() != null) ? driver.getCabNumber() : "Not Assigned" %></td>
                         <td><%= (driver.getCabModel() != null) ? driver.getCabModel() : "Not Assigned" %></td>
+                        <td><button type="submit" name="action" value="confirm" class="btn btn-success btn-sm">Authorize</button></td>
                     </tr>
                     <% } } else { %>
                     <tr>

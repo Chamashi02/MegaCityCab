@@ -24,6 +24,60 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Request a Cab</title>
         <link rel="stylesheet" href="css/bookTrip.css"/>
+        <style>
+            /* Popup container - hidden by default */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+    overflow: auto; /* Enable scroll if needed */
+    padding-top: 60px; /* Position popup in the center */
+}
+
+/* Popup content */
+.popup-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Close button */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.popup h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.popup p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+        </style>
     </head>
     <body>
         <nav class="navbar">
@@ -88,12 +142,14 @@
             </select>
             <button type="button" class="submit-btn" onclick="calculateFare()">Get Estimate</button>
         </div>
-        <div id="fareModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
+            <!-- Custom Popup -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">×</span>
                 <h2>Fare Estimate</h2>
-                <div id="fareInfo"></div>
-                <button id="requestBookingBtn" onclick="submitBooking()">Request Booking</button>
+                <p><strong>Distance:</strong> <span id="popupDistance">0</span> km</p>
+                <p><strong>Estimated Fare:</strong> <span id="popupFare">0</span> LKR</p>
+                <button id="requestBookingBtn" type="button" onclick="submitBooking()">Request Booking</button>
             </div>
         </div>
         </form>
@@ -114,21 +170,20 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         var response = JSON.parse(xhr.responseText);
-                        console.log(xhr.responseText);
+                        console.log("📌 Full Response Object:", response);
 
+                        var distanceText = response.distance ? String(response.distance).trim() : "N/A";
+                        var fareText = response.estimatedFare ? String(response.estimatedFare).trim() : "N/A";
 
-                        // Ensure response contains expected values
-                        if (response.distance && response.estimatedFare) {
-                            var fareInfoContent = `
-                                <p><strong>Distance:</strong> ${response.distance} km</p>
-                                <p><strong>Estimated Fare:</strong> ${response.estimatedFare} LKR</p>
-                            `;
+                        console.log("🔵 Distance:", distanceText);
+                        console.log("🔵 Estimated Fare:", fareText);
 
-                            document.getElementById("fareInfo").innerHTML = fareInfoContent;
-                            document.getElementById("fareModal").style.display = "flex"; // Show modal
-                        } else {
-                            alert("Error retrieving fare estimate. Please try again.");
-                        }
+                        // Update the popup content with the fare estimate
+                        document.getElementById("popupDistance").innerText = distanceText;
+                        document.getElementById("popupFare").innerText = fareText;
+
+                        // Show the popup
+                        document.getElementById("popup").style.display = "block";
                     }
                 };
 
@@ -139,14 +194,24 @@
                 xhr.send(params);
             }
 
-            // Function to Close Modal
-            function closeModal() {
-                document.getElementById("fareModal").style.display = "none";
+            // Function to close the popup
+            function closePopup() {
+                document.getElementById("popup").style.display = "none";
             }
 
             // Function to Submit Booking
             function submitBooking() {
-                document.querySelector("form").submit();
+                var form = document.getElementById("bookingForm");
+
+                // Append the 'action' parameter before submission
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "requestBooking";
+                form.appendChild(actionInput);
+
+                // Submit the form
+                form.submit();
             }
         </script>
         <script>

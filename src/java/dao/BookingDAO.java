@@ -17,13 +17,19 @@ public class BookingDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(query)) {
             
+            Integer cabId = booking.getCabId();
+            
             pst.setInt(1, booking.getUserId());
             pst.setString(2, booking.getCabType());
             pst.setString(3, booking.getPickupLocation());
             pst.setString(4, booking.getDropoffLocation());
             pst.setString(5, booking.getPickupTime());
             pst.setString(6, booking.getStatus());
-            pst.setInt(7, booking.getCabId());
+            if (cabId != null) {
+                pst.setInt(7, cabId);
+            } else {
+                pst.setNull(7, java.sql.Types.INTEGER);  // Handle null case for cabId
+            }
             pst.setDouble(8, booking.getEstimatedFare());
             pst.setDouble(9, booking.getDistance());
 
