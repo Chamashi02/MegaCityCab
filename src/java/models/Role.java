@@ -9,5 +9,5 @@ package models;
  * @author Chamashi
  */
 public enum Role {
-    admin,customer;
+    admin,customer,driver;
 }
