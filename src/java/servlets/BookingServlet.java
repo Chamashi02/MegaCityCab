@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.Console;
 import java.text.DecimalFormat;
 
 public class BookingServlet extends HttpServlet {
@@ -24,6 +25,7 @@ public class BookingServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         System.out.println("BookingServlet called.");
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
@@ -34,6 +36,7 @@ public class BookingServlet extends HttpServlet {
 
         try {
             String action = request.getParameter("action");
+            System.out.println("Action received: " + action);
 
             if ("calculateFare".equals(action)) {
                 String cabType = request.getParameter("cabType");
