@@ -92,39 +92,84 @@ public class CabDAO {
     return false;
 }
     
-public static boolean assignCabToBooking(int cabId, int bookingId) {
-    System.out.println("assignCabToBooking called");
-    String bookingSql = "UPDATE bookings SET cab_id = ? WHERE booking_id = ?";
-    String cabSql = "UPDATE cabs SET status = 'busy' WHERE cab_id = ?";
-    
-    System.out.println("Assigning Cab ID: " + cabId + " to Booking ID: " + bookingId);
-    
-    try (Connection conn = DBConnection.getConnection();
-         PreparedStatement bookingStmt = conn.prepareStatement(bookingSql);
-         PreparedStatement cabStmt = conn.prepareStatement(cabSql)) {
+    public static boolean assignCabToBooking(int cabId, int bookingId) {
+        System.out.println("assignCabToBooking called");
+        String bookingSql = "UPDATE bookings SET cab_id = ? WHERE booking_id = ?";
+        String cabSql = "UPDATE cabs SET status = 'busy' WHERE cab_id = ?";
 
-        // Update booking with the cab id
-        bookingStmt.setInt(1, cabId);
-        bookingStmt.setInt(2, bookingId);
-        
-        // Update cab status to 'busy'
-        cabStmt.setInt(1, cabId);
+        System.out.println("Assigning Cab ID: " + cabId + " to Booking ID: " + bookingId);
 
-        boolean bookingUpdated = bookingStmt.executeUpdate() > 0;
-        boolean cabUpdated = cabStmt.executeUpdate() > 0;
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement bookingStmt = conn.prepareStatement(bookingSql);
+             PreparedStatement cabStmt = conn.prepareStatement(cabSql)) {
 
-        if (bookingUpdated && cabUpdated) {
-            return true;
-        } else {
-            System.out.println("Failed to update booking or cab status.");
+            // Update booking with the cab id
+            bookingStmt.setInt(1, cabId);
+            bookingStmt.setInt(2, bookingId);
+
+            // Update cab status to 'busy'
+            cabStmt.setInt(1, cabId);
+
+            boolean bookingUpdated = bookingStmt.executeUpdate() > 0;
+            boolean cabUpdated = cabStmt.executeUpdate() > 0;
+
+            if (bookingUpdated && cabUpdated) {
+                return true;
+            } else {
+                System.out.println("Failed to update booking or cab status.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
 
+    public static int getAllCabsCount() {
+        String query = "SELECT COUNT(*) AS cabs_count FROM cabs";
+        int cabsCount = 0;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            
+            if (rs.next()) {
+                cabsCount = rs.getInt("cabs_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return cabsCount;
+    }
 
+    // Get available cabs by type
+    public static List<Cab> getAvailableCabsByType(String cabType) {
+        List<Cab> cabs = new ArrayList<>();
+        String query = "SELECT * FROM cabs WHERE cab_type = ? AND status = 'available'";
+    
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+    
+            pstmt.setString(1, cabType);
+            ResultSet rs = pstmt.executeQuery();
+    
+            while (rs.next()) {
+                Cab cab = new Cab(
+                    rs.getInt("cab_id"),
+                    rs.getString("cab_number"),
+                    rs.getString("model"),
+                    rs.getString("cab_type"),
+                    rs.getString("capacity"),
+                    rs.getString("status"),
+                    rs.getObject("driver_id") != null ? rs.getInt("driver_id") : null
+                );
+                cabs.add(cab);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cabs;
+    }
 
 }
     

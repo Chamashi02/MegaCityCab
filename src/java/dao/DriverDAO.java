@@ -119,6 +119,24 @@ public class DriverDAO {
         }
         return driver;
     }
+    
+        public static int getAllDriversCount() {
+        String query = "SELECT COUNT(*) AS drivers_count FROM driver";
+        int driversCount = 0;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            
+            if (rs.next()) {
+                driversCount = rs.getInt("drivers_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return driversCount;
+    }
 
 
 }

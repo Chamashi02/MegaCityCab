@@ -16,7 +16,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* Adjust body to accommodate sidebar */
         .body-wrap {
             margin-left: 17%;
             margin-top: 1rem;
@@ -32,60 +31,88 @@
     <div class="body-wrap">
         <h2 class="mb-4 ms-4 text-left">Manage Bookings</h2>
         
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>User ID</th>
-                        <th>Pickup Location</th>
-                        <th>Dropoff Location</th>
-                        <th>Pickup Time</th>
-                        <th>Status</th>
-                        <th>Price (LKR)</th>
-                        <th>Distance (km)</th>
-                        <th>Cab Type</th>
-                        <th>Cab ID</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% List<Booking> bookings = BookingDAO.getAllBookings();
-                       if (bookings != null && !bookings.isEmpty()) {
-                           for (Booking booking : bookings) { %>
-                    <tr>
-                        <td><%= booking.getBookingId() %></td>
-                        <td><%= booking.getUserId() %></td>
-                        <td><%= booking.getPickupLocation() %></td>
-                        <td><%= booking.getDropoffLocation() %></td>
-                        <td><%= booking.getPickupTime() %></td>
-                        <td><span class="badge bg-info text-dark"><%= booking.getStatus() %></span></td>
-                        <td><%= booking.getEstimatedFare() %></td>
-                        <td><%= booking.getDistance() %></td>
-                        <td><%= booking.getCabType() %></td>
-                        <td><%= booking.getCabId() == null ? "Unassigned" : booking.getCabId() %>
-                        <% if (booking.getCabId() == null) { %>
-                            <button onclick="openPopup(<%= booking.getBookingId() %>)" class="btn btn-warning btn-sm">Assign Cab</button>
-                            <% } %>
-                        </td>
-                        <td>
-                            <form action="AssignCabServlet" method="post" class="d-inline">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
-                                <button type="submit" name="action" value="confirm" class="btn btn-success btn-sm">Confirm</button>
-                            </form>
-                            <form action="AssignCabServlet" method="post" class="d-inline">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
-                                <button type="submit" name="action" value="cancel" class="btn btn-danger btn-sm">Cancel</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <% } } else { %>
-                    <tr>
-                        <td colspan="11" class="text-center">No bookings available.</td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="confirmed-tab" data-bs-toggle="tab" data-bs-target="#confirmed" type="button" role="tab">Confirmed</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab">Cancelled</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="bookingTabsContent">
+            <% List<Booking> bookings = BookingDAO.getAllBookings(); %>
+            
+            <% String[] statuses = {"Pending", "Confirmed", "Completed", "Cancelled"};
+               String[] colors = {"warning", "success", "primary", "danger"};
+               for (int i = 0; i < statuses.length; i++) { %>
+            <div class="tab-pane fade <%= i == 0 ? "show active" : "" %>" id="<%= statuses[i].toLowerCase() %>" role="tabpanel">
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Trip details</th>
+                                <th>Pickup Time</th>
+                                <th>Distance</th>
+                                <th>Fare</th>
+                                <th>Cab type</th>
+                                <th>Cab ID</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Booking booking : bookings) { 
+                                if (statuses[i].equals(booking.getStatus())) { %>
+                            <tr>
+                                <td><%= booking.getBookingId() %></td>
+                                <td><%= booking.getUserId() %></td>
+                                <td style="text-align: left;">
+                                    <strong>Pickup:</strong> <%= booking.getPickupLocation() %><br>
+                                    <strong>Dropoff:</strong> <%= booking.getDropoffLocation() %>
+                                </td>
+                                <td><%= booking.getPickupTime() %></td>
+                                <td><%= booking.getDistance() %> km</td>
+                                <td>Rs. <%= booking.getEstimatedFare() %></td>
+                                <td><%= booking.getCabType() %></td>
+                                <td>
+                                    <% if (booking.getCabId() == null && (statuses[i].equals("Cancelled") || statuses[i].equals("Completed"))) { %>
+                                        <span class="badge bg-<%= colors[i] %>"><%= statuses[i] %></span> 
+                                    <% } else if (booking.getCabId() == null) { %>
+                                        <button onclick="openPopup(<%= booking.getBookingId() %>)" class="btn btn-warning btn-sm">Assign</button>
+                                    <% } else { %>
+                                        <%= booking.getCabId() %>
+                                    <% } %>
+                                </td>
+                                <td><span class="badge bg-<%= colors[i] %>"><%= statuses[i] %></span></td>
+                                <td>
+                                    <% if (statuses[i].equals("Pending")) { %>
+                                        <form action="AssignCabServlet" method="post" class="d-inline" onsubmit="return checkCabAssigned(<%= booking.getBookingId() %>)">
+                                            <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                            <button type="submit" name="action" value="confirm" class="btn btn-success btn-sm">Confirm</button>
+                                        </form>
+                                        <form action="AssignCabServlet" method="post" class="d-inline">
+                                            <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                            <button type="submit" name="action" value="cancel" class="btn btn-danger btn-sm">Cancel</button>
+                                        </form>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% } } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <% } %>
         </div>
     </div>
 
@@ -123,6 +150,15 @@
             document.getElementById("bookingId").value = bookingId;
             var myModal = new bootstrap.Modal(document.getElementById('cabPopup'));
             myModal.show();
+        }
+        
+        function checkCabAssigned(bookingId) {
+            var cabCell = document.querySelector("tr td button[onclick='openPopup(" + bookingId + ")']");
+            if (cabCell) {
+                alert("Please assign a cab before confirming the booking.");
+                return false;
+            }
+            return true;
         }
     </script>
 </body>

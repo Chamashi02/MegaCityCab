@@ -95,6 +95,24 @@ public class BookingDAO {
         }
         return bookings;
     }
+    
+    public static int getPendingBookingCount() {
+        String query = "SELECT COUNT(*) AS pending_count FROM bookings WHERE status = 'pending'";
+        int pendingCount = 0;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            
+            if (rs.next()) {
+                pendingCount = rs.getInt("pending_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return pendingCount;
+    }
 }
 
     

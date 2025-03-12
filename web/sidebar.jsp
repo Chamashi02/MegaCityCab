@@ -41,20 +41,28 @@
         color: #4979ae !important; /* Primary text color */
         border-radius: 5px;
     }
+    .sidebar-panel-name{
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-size: x-small;
+        margin-top: 3px;
+    }
 </style>
 
 <!-- Sidebar -->
 <ul class="navbar-nav sidebar sidebar-dark position-fixed vh-100" id="accordionSidebar">
     <!-- Sidebar Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center text-white text-decoration-none py-3" href="adminDashboard.jsp">
-        <div class="sidebar-brand-text mx-3">Admin Panel</div>
+    <a class="sidebar-brand d-flex flex-column align-items-center justify-content-center text-white text-decoration-none py-3" href="AdminDashboard">
+        <div class="sidebar-brand-text fw-bold">Mega City Cab</div>
+        <div class="sidebar-panel-name">Admin Panel</div>
     </a>
+
 
     <hr class="sidebar-divider my-0">
 
     <!-- Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="admindashboard.jsp">
+        <a class="nav-link" href="AdminDashboard">
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
@@ -110,7 +118,7 @@
 
     <!-- Logout -->
     <li class="nav-item">
-        <a class="nav-link" href="logout.jsp">
+        <a class="nav-link" href="LogoutServlet">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
         </a>

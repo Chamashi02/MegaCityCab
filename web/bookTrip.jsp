@@ -2,6 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.LocationDAO" %>
 <%@ page import="models.Location" %>
+<%@ page import="models.User" %>
+<%
+    HttpSession userSession = request.getSession(false);
+    User user = (User) userSession.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+<%
+    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "0");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,6 +33,7 @@
                 <a href="#">About</a>
                 <a href="#">Services</a>
                 <a href="#">Contact</a>
+                <a href="LogoutServlet">Logout</a>
             </div>
         </nav>
         <section class="hero">
@@ -32,9 +48,24 @@
                     <span id="selectedCab">Select Cab Type</span>
                 </button>
                 <div class="dropdown-content" id="dropdownMenu">
-                    <div onclick="selectCab('Mini')"><img src="assets/minicab.png" alt="Mini"> Mini</div>
-                    <div onclick="selectCab('Sedan')"><img src="assets/sedancab.png" alt="Sedan"> Sedan</div>
-                    <div onclick="selectCab('SUV')"><img src="assets/suvcab.png" alt="SUV"> SUV</div>
+                    <div onclick="selectCab('Mini')"><img src="assets/minicab.png" alt="Mini">
+                        <div class="cab-details">
+                            <span class="cab-name">Mini</span>
+                            <span class="cab-passengers">3 passengers</span>
+                        </div>                                                                   
+                    </div>
+                    <div onclick="selectCab('Sedan')"><img src="assets/sedancab.png" alt="Sedan">
+                        <div class="cab-details">
+                            <span class="cab-name">Sedan</span>
+                            <span class="cab-passengers">4 passengers</span>
+                        </div>  
+                    </div>
+                    <div onclick="selectCab('SUV')"><img src="assets/suvcab.png" alt="SUV">
+                        <div class="cab-details">
+                            <span class="cab-name">SUV</span>
+                            <span class="cab-passengers">6 passengers</span>
+                        </div>  
+                    </div>
                 </div>
                 <input type="hidden" name="cabType" id="cabType" value="">
             </div>
@@ -72,8 +103,8 @@
                 var pickupLocation = document.getElementById("pickupLocation").value;
                 var dropoffLocation = document.getElementById("dropoffLocation").value;
 
-                if (!pickupLocation || !dropoffLocation) {
-                    alert("Please select both pickup and dropoff locations.");
+                if (!pickupLocation || !dropoffLocation || !cabType) {
+                    alert("Please select your preferred cab type, pickup and dropoff locations.");
                     return;
                 }
 
