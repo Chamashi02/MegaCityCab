@@ -12,6 +12,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .body-wrap {
             margin-left: 17%;
@@ -20,6 +21,51 @@
         .table-responsive {
             margin-left: 25px;
             margin-right: 25px;
+        }
+        /* Style for the modal */
+        #authorizationModal {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: none;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 15% auto;
+            padding: 20px;
+            background-color: white;
+            width: 40%;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 30px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -56,7 +102,9 @@
                         <td><span class="badge bg-info text-dark"><%= driver.getStatus() %></span></td>
                         <td><%= (driver.getCabNumber() != null) ? driver.getCabNumber() : "Not Assigned" %></td>
                         <td><%= (driver.getCabModel() != null) ? driver.getCabModel() : "Not Assigned" %></td>
-                        <td><button type="submit" name="action" value="confirm" class="btn btn-success btn-sm">Authorize</button></td>
+                        <td>
+                            <button class="btn btn-success" onclick="openAuthorizationForm('<%= driver.getDriverId() %>', '<%= driver.getName() %>', '<%= driver.getPhoneNumber() %>', '<%= driver.getAddress() %>')">Authorize</button>
+                        </td>
                     </tr>
                     <% } } else { %>
                     <tr>
@@ -66,8 +114,57 @@
                 </tbody>
             </table>
         </div>
+                <!-- Popup Form -->
+    <div id="authorizationModal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthorizationForm()">&times;</span>
+            <h2>Authorize Driver</h2>
+            <form action="AuthorizeDriverServlet" method="post">
+                <input type="hidden" id="driverId" name="driverId">
+
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required readonly>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" required readonly>
+
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required readonly>
+
+                <label for="nic">NIC</label>
+                <input type="text" id="nic" name="nic" required>
+
+                <input type="submit" value="Authorize">
+            </form>
+        </div>
+    </div>
     </div>
 
+    <script>
+        function openAuthorizationForm(driverId, name, phone, address) {
+            // Pre-fill the fields with the driver's existing details
+            $('#driverId').val(driverId);
+            $('#name').val(name);
+            $('#phone').val(phone);
+            $('#address').val(address);
+            
+            // Open the popup
+            $('#authorizationModal').show();
+        }
+
+        function closeAuthorizationForm() {
+            $('#authorizationModal').hide();
+        }
+    </script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
