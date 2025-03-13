@@ -4,9 +4,10 @@ public class Driver {
     
     private int driverId;
     private String name, licenseNumber, phoneNumber, address, status, cabNumber,cabModel;
+    private boolean isAuthorized;
 
 
-    public Driver(int driverId, String name, String licenseNumber, String phoneNumber, String address, String status, String cabNumber, String cabModel) {
+    public Driver(int driverId, String name, String licenseNumber, String phoneNumber, String address, String status, String cabNumber, String cabModel, boolean isAuthorized) {
         this.driverId = driverId;
         this.name = name;
         this.licenseNumber = licenseNumber;
@@ -15,6 +16,7 @@ public class Driver {
         this.status = status;
         this.cabNumber = cabNumber;
         this.cabModel = cabModel;
+        this.isAuthorized = isAuthorized;
     }
 
     public int getDriverId() {
@@ -79,6 +81,14 @@ public class Driver {
 
     public void setCabModel(String cabModel) {
         this.cabModel = cabModel;
+    }
+
+    public boolean isAuthorized() {
+        return isAuthorized;
+    }
+
+    public void setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
     }
     
     

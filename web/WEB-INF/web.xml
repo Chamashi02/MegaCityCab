@@ -52,6 +52,10 @@
         <servlet-name>AuthorizeDriverServlet</servlet-name>
         <servlet-class>servlets.AuthorizeDriverServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DriverDashboardServlet</servlet-name>
+        <servlet-class>servlets.DriverDashboardServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -106,6 +110,10 @@
     <servlet-mapping>
         <servlet-name>AuthorizeDriverServlet</servlet-name>
         <url-pattern>/AuthorizeDriverServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DriverDashboardServlet</servlet-name>
+        <url-pattern>/DriverDashboardServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1</session-timeout>

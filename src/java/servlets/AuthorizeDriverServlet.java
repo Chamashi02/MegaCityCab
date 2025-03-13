@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.DBConnection;
+import dao.DriverDAO;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -16,6 +17,7 @@ public class AuthorizeDriverServlet extends HttpServlet {
             throws ServletException, IOException {
         
         // Retrieve form parameters
+        int driverId = Integer.parseInt(request.getParameter("driverId"));
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -28,17 +30,22 @@ public class AuthorizeDriverServlet extends HttpServlet {
         // Hash the password using SHA-256
         String hashedPassword = hashPassword(password);
         if (hashedPassword == null) {
-            response.sendRedirect("error.jsp?error=Error hashing password");
+            response.sendRedirect("viewDrivers?error=Error hashing password");
             return;
         }
 
-        // Insert the new user into the user table
-        String sql = "INSERT INTO user (name, username, password, email, phonenumber, address, NIC, role) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        Connection con = null;
+        PreparedStatement stmt = null;
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+        try {
+            con = DBConnection.getConnection();
+            con.setAutoCommit(false);  // Start transaction
 
+            // Insert the new user into the user table
+            String sql = "INSERT INTO user (name, username, password, email, phonenumber, address, NIC, role) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            stmt = con.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, username);
             stmt.setString(3, hashedPassword);
@@ -49,16 +56,40 @@ public class AuthorizeDriverServlet extends HttpServlet {
             stmt.setString(8, role);
 
             int rowsInserted = stmt.executeUpdate();
+
             if (rowsInserted > 0) {
-                // After successful authorization, you can redirect or update accordingly
-                response.sendRedirect("viewDrivers?message=Driver Authorized Successfully");
+                // Mark the driver as authorized
+                DriverDAO driverDAO = new DriverDAO();
+                boolean isAuthorized = driverDAO.authorizeDriver(driverId);
+
+                if (isAuthorized) {
+                    con.commit();  // Commit transaction if both operations succeed
+                    response.sendRedirect("viewDrivers?message=Driver Authorized Successfully");
+                } else {
+                    con.rollback();
+                    response.sendRedirect("viewDrivers?error=Authorization Failed");
+                }
             } else {
-                response.sendRedirect("viewDrivers?message=Authorization Failed");
+                con.rollback();
+                response.sendRedirect("viewDrivers?error=User Insertion Failed");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                if (con != null) con.rollback();  // Rollback on error
+            } catch (Exception rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             response.sendRedirect("viewDrivers?error=Error occurred during authorization");
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.setAutoCommit(true);
+                if (con != null) con.close();
+            } catch (Exception closeEx) {
+                closeEx.printStackTrace();
+            }
         }
     }
 

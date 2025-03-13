@@ -22,30 +22,37 @@
             margin-left: 25px;
             margin-right: 25px;
         }
-        /* Style for the modal */
+
+        /* Modal Styling */
         #authorizationModal {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: white;
-            display: none;
+            background: rgba(0, 0, 0, 0.5); /* Overlay effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .modal-content {
-            position: relative;
-            margin: 15% auto;
+        .modal-container {
+            background: white;
+            width: 400px;
             padding: 20px;
-            background-color: white;
-            width: 40%;
-            border-radius: 8px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-in-out;
+            position: relative;
         }
 
         .close {
             position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 30px;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
             color: #aaa;
             cursor: pointer;
         }
@@ -54,18 +61,26 @@
             color: black;
         }
 
-        input[type="text"], input[type="password"], input[type="email"], select {
+        input[type="text"], input[type="password"], input[type="email"] {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         input[type="submit"] {
-            padding: 10px 20px;
-            background-color: green;
+            padding: 10px;
+            background: green;
             color: white;
             border: none;
             cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        input[type="submit"]:hover {
+            background: darkgreen;
         }
     </style>
 </head>
@@ -80,12 +95,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>License Number</th>
-                        <th>Phone Number</th>
+                        <th>License</th>
+                        <th>Phone</th>
                         <th>Address</th>
-                        <th>Status</th>
-                        <th>Cab Number</th>
-                        <th>Cab Model</th>
+                        <th>Availability</th>
+                        <th>Cab</th>
+                        <th>Model</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -103,68 +118,90 @@
                         <td><%= (driver.getCabNumber() != null) ? driver.getCabNumber() : "Not Assigned" %></td>
                         <td><%= (driver.getCabModel() != null) ? driver.getCabModel() : "Not Assigned" %></td>
                         <td>
-                            <button class="btn btn-success" onclick="openAuthorizationForm('<%= driver.getDriverId() %>', '<%= driver.getName() %>', '<%= driver.getPhoneNumber() %>', '<%= driver.getAddress() %>')">Authorize</button>
+                            <% if (!driver.isAuthorized()) { %>
+                                <button class="btn btn-warning" onclick="openAuthorizationForm('<%= driver.getDriverId() %>', '<%= driver.getName() %>', '<%= driver.getPhoneNumber() %>', '<%= driver.getAddress() %>')">Authorize</button>
+                            <% } else { %>
+                                <span class="badge bg-success">Authorized</span>
+                            <% } %>
                         </td>
                     </tr>
                     <% } } else { %>
                     <tr>
-                        <td colspan="8" class="text-center">No drivers found.</td>
+                        <td colspan="9" class="text-center">No drivers found.</td>
                     </tr>
                     <% } %>
                 </tbody>
             </table>
         </div>
-                <!-- Popup Form -->
-    <div id="authorizationModal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeAuthorizationForm()">&times;</span>
-            <h2>Authorize Driver</h2>
-            <form action="AuthorizeDriverServlet" method="post">
-                <input type="hidden" id="driverId" name="driverId">
 
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required readonly>
+        <!-- Modal for Authorization -->
+        <div id="authorizationModal">
+            <div class="modal-container">
+                <span class="close" onclick="closeAuthorizationForm()">&times;</span>
+                <h2>Authorize Driver</h2>
+                <form action="AuthorizeDriverServlet" method="post">
+                    <input type="hidden" id="driverId" name="driverId">
 
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required readonly>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
 
-                <label for="phone">Phone Number</label>
-                <input type="text" id="phone" name="phone" required readonly>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
 
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required readonly>
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" required readonly>
 
-                <label for="nic">NIC</label>
-                <input type="text" id="nic" name="nic" required>
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required readonly>
 
-                <input type="submit" value="Authorize">
-            </form>
+                    <label for="nic">NIC</label>
+                    <input type="text" id="nic" name="nic" required>
+
+                    <input type="submit" value="Authorize">
+                </form>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>
         function openAuthorizationForm(driverId, name, phone, address) {
-            // Pre-fill the fields with the driver's existing details
+            console.log("Opening modal for driver:", driverId); // Debugging
             $('#driverId').val(driverId);
             $('#name').val(name);
             $('#phone').val(phone);
             $('#address').val(address);
-            
-            // Open the popup
-            $('#authorizationModal').show();
+
+            setTimeout(() => $('#username').focus(), 100);
+
+            $('#authorizationModal').fadeIn(); // Only opens when called
         }
 
         function closeAuthorizationForm() {
-            $('#authorizationModal').hide();
+            console.log("Closing modal");
+            $('#authorizationModal').fadeOut();
         }
+
+        // Ensure modal does NOT show on page load
+        $(document).ready(function () {
+            $('#authorizationModal').hide(); // Force hide on page load
+        });
+
+        // Close modal when clicking outside
+        $(document).mouseup(function(e) {
+            var modal = $(".modal-container");
+            if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                closeAuthorizationForm();
+            }
+        });
+
     </script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

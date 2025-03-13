@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             } else if (user.getRole().equals(Role.customer)){
                 response.sendRedirect("bookTrip.jsp");
             } else if (user.getRole().equals(Role.driver)) {
-                response.sendRedirect("dirver.jsp");
+                response.sendRedirect("DriverDashboardServlet");
             }
         } else {
             response.sendRedirect("login.jsp?error=Invalid credentials");

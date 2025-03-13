@@ -119,6 +119,35 @@ public class BookingDAO {
         
         return pendingCount;
     }
+
+    // Get bookings assigned to a specific cab
+    public static List<Booking> getBookingsForCab(int cabId) {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT * FROM bookings WHERE cab_id = ? AND status IN ('Assigned', 'Confirmed')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, cabId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Booking booking = new Booking(
+                    rs.getInt("booking_id"),
+                    rs.getInt("user_id"),
+                    rs.getString("cab_type"),
+                    rs.getString("pickup_location"),
+                    rs.getString("dropoff_location"),
+                    rs.getString("pickup_time"),
+                    rs.getString("status"),
+                    rs.getInt("cab_id"),
+                    rs.getDouble("price"),
+                    rs.getDouble("distance")
+                );
+                bookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
 }
 
     

@@ -70,11 +70,13 @@
 .popup h2 {
     margin-top: 0;
     font-size: 1.5em;
+    margin-bottom: 2rem;
 }
 
 .popup p {
     font-size: 1.2em;
     margin: 10px 0;
+    color: #555;
 }
 
         </style>
@@ -147,8 +149,12 @@
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopup()">×</span>
                 <h2>Fare Estimate</h2>
-                <p><strong>Distance:</strong> <span id="popupDistance">0</span> km</p>
-                <p><strong>Estimated Fare:</strong> <span id="popupFare">0</span> LKR</p>
+                <p>Distance:<strong> <span id="popupDistance">0</span> km</strong></p>
+                <p>Estimated Fare: <strong><span id="popupFare">0</span> LKR</strong></p>
+
+                <!-- Discount Info Section -->
+                <p id="discountMessage" style="color: green; font-weight: bold; margin-top: 2rem;"></p>
+
                 <button id="requestBookingBtn" type="button" onclick="submitBooking()">Request Booking</button>
             </div>
         </div>
@@ -172,15 +178,33 @@
                         var response = JSON.parse(xhr.responseText);
                         console.log("📌 Full Response Object:", response);
 
-                        var distanceText = response.distance ? String(response.distance).trim() : "N/A";
-                        var fareText = response.estimatedFare ? String(response.estimatedFare).trim() : "N/A";
+                        var distance = response.distance ? parseFloat(response.distance) : 0;
+                        var estimatedFare = response.estimatedFare ? parseFloat(response.estimatedFare) : 0;
 
-                        console.log("🔵 Distance:", distanceText);
-                        console.log("🔵 Estimated Fare:", fareText);
+                        console.log("🔵 Distance:", distance);
+                        console.log("🔵 Estimated Fare:", estimatedFare);
 
                         // Update the popup content with the fare estimate
-                        document.getElementById("popupDistance").innerText = distanceText;
-                        document.getElementById("popupFare").innerText = fareText;
+                        document.getElementById("popupDistance").innerText = distance.toFixed(2);
+                        document.getElementById("popupFare").innerText = estimatedFare.toFixed(2);
+
+                        // Apply Discount Logic
+                        var discountMessage = "";
+                        if (distance > 20) {
+                            discountMessage = "🎉 20% OFF applied for trips over 20km!";
+                            estimatedFare *= 0.8;
+                        } else if (distance > 15) {
+                            discountMessage = "🎉 10% OFF applied for trips over 15km!";
+                            estimatedFare *= 0.9;
+                        } else if (distance > 10) {
+                            discountMessage = "🎉 5% OFF applied for trips over 10km!";
+                            estimatedFare *= 0.95;
+                        } else {
+                            discountMessage = "No discounts available for this trip.";
+                        }
+
+                        document.getElementById("discountMessage").innerText = discountMessage;
+                        document.getElementById("popupFare").innerText = estimatedFare.toFixed(2); // Update fare after discount
 
                         // Show the popup
                         document.getElementById("popup").style.display = "block";
@@ -193,6 +217,7 @@
                              "&action=calculateFare";
                 xhr.send(params);
             }
+
 
             // Function to close the popup
             function closePopup() {

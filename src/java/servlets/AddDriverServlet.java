@@ -16,8 +16,9 @@ public class AddDriverServlet extends HttpServlet {
         String license = request.getParameter("license_number");
         String phone = request.getParameter("phone_number");
         String address = request.getParameter("address");
+        boolean isAuthorized = false;
 
-        Driver driver = new Driver(0, name, license, phone, address, "available","","");
+        Driver driver = new Driver(0, name, license, phone, address, "available","","", isAuthorized);
         boolean success = DriverDAO.addDriver(driver);
 
         response.sendRedirect("viewDrivers?status=" + (success ? "success" : "error"));
