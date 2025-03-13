@@ -22,6 +22,7 @@ public class DriverDashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        System.out.println("DriverDashboardServlet called");
 
         // Ensure the user is logged in and is a driver
         User user = (session != null) ? (User) session.getAttribute("user") : null;

@@ -56,6 +56,18 @@
         <servlet-name>DriverDashboardServlet</servlet-name>
         <servlet-class>servlets.DriverDashboardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateBookingStatusServlet</servlet-name>
+        <servlet-class>servlets.UpdateBookingStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingHistoryServlet</servlet-name>
+        <servlet-class>servlets.BookingHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCabDetailsServlet</servlet-name>
+        <servlet-class>servlets.GetCabDetailsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -114,6 +126,18 @@
     <servlet-mapping>
         <servlet-name>DriverDashboardServlet</servlet-name>
         <url-pattern>/DriverDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateBookingStatusServlet</servlet-name>
+        <url-pattern>/UpdateBookingStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingHistoryServlet</servlet-name>
+        <url-pattern>/BookingHistoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCabDetailsServlet</servlet-name>
+        <url-pattern>/GetCabDetailsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1</session-timeout>
