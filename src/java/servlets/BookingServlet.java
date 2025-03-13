@@ -92,7 +92,7 @@ public class BookingServlet extends HttpServlet {
             boolean success = BookingDAO.addBooking(booking);
 
             if (success) {
-                response.getWriter().println("<script>alert('Booking Requested Successfully!'); window.location='bookTrip.jsp';</script>");
+                response.getWriter().println("<script>alert('Booking Requested Successfully!'); window.location='BookingHistoryServlet';</script>");
             } else {
                 response.getWriter().println("<script>alert('Booking Failed! Try again.'); window.location='bookTrip.jsp';</script>");
             }

@@ -148,6 +148,49 @@ public class BookingDAO {
         }
         return bookings;
     }
+    
+    public static List<Booking> getBookingHistoryByUserId(int userId) {
+        List<Booking> bookingList = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            String query = "SELECT * FROM bookings WHERE user_id = ? ORDER BY pickup_time DESC";
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, userId);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Booking booking = new Booking(
+                    rs.getInt("booking_id"),
+                    rs.getInt("user_id"),
+                    rs.getString("cab_type"),
+                    rs.getString("pickup_location"),
+                    rs.getString("dropoff_location"),
+                    rs.getString("pickup_time"),
+                    rs.getString("status"),
+                    rs.getInt("cab_id"),
+                    rs.getDouble("price"),  // Assuming "price" is equivalent to estimatedFare
+                    rs.getDouble("distance")
+                );
+                bookingList.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return bookingList;
+    }
 }
 
     

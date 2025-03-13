@@ -85,9 +85,9 @@
         <nav class="navbar">
             <div class="logo">Mega City Cabs</div>
             <div class="nav-links">
-                <a href="#">Home</a>
+                <a href="bookTrip.jsp">Book a Trip</a>
+                <a href="BookingHistoryServlet">Booking History</a>
                 <a href="#">About</a>
-                <a href="#">Services</a>
                 <a href="#">Contact</a>
                 <a href="LogoutServlet">Logout</a>
             </div>
