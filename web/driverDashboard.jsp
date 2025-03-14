@@ -1,6 +1,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
+<%@ page import="models.Booking" %>
 <%
     List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
     String error = (String) request.getAttribute("error");
@@ -28,7 +29,7 @@
     </style>
 </head>
 <body class="bg-light">
-    <jsp:include page="sidebar.jsp" />
+    <jsp:include page="driverSidebar.jsp" />
 
     <div class="body-wrap">
         <h2 class="mb-4 ms-4 text-left">Driver Dashboard</h2>
