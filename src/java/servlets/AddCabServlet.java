@@ -26,10 +26,6 @@ public class AddCabServlet extends HttpServlet {
         boolean success = CabDAO.addCab(cab);
         
         response.sendRedirect("viewCabs?status=" + (success ? "success" : "error"));
-
-
-
-
     }
 }
         

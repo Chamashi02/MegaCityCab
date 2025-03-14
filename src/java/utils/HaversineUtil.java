@@ -1,7 +1,7 @@
 package utils;
 
 public class HaversineUtil {
-    private static final double EARTH_RADIUS_KM = 6371.0; // in kilometers
+    private static final double EARTH_RADIUS_KM = 6371.0;
     
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double lat1Rad = Math.toRadians(lat1);
@@ -18,6 +18,6 @@ public class HaversineUtil {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return EARTH_RADIUS_KM * c; // Returns distance in kilometers
+        return EARTH_RADIUS_KM * c; 
     }
 }
