@@ -16,12 +16,12 @@ public class ViewDriversServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        System.out.println("🔵 ViewDriversServlet triggered!"); // Debugging log
+        System.out.println("ViewDriversServlet triggered!"); 
 
         DriverDAO driverDAO = new DriverDAO();
         List<Driver> drivers = driverDAO.getAllDrivers();
 
-        System.out.println("🟢 Retrieved " + drivers.size() + " drivers from DB."); // Debugging log
+        System.out.println("Retrieved " + drivers.size() + " drivers from DB."); 
 
         request.setAttribute("driverList", drivers);
         RequestDispatcher dispatcher = request.getRequestDispatcher("viewDrivers.jsp");

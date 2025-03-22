@@ -18,7 +18,7 @@ public class BookingHistoryServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            response.sendRedirect("login.jsp"); // Redirect if not logged in
+            response.sendRedirect("login.jsp"); 
             return;
         }
 

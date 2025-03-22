@@ -52,6 +52,7 @@ public class RegisterServlet extends HttpServlet {
 
             if (rowsInserted > 0) {
                 response.sendRedirect("login.jsp?message=Registration Successful, Please Login");
+                response.getWriter().println("<script>alert('Registration Successful, Please Login'); window.location='login.jsp';</script>");
             } else {
                 response.sendRedirect("login.jsp?message=Registration Failed, Try Again");
             }
@@ -67,22 +68,19 @@ public class RegisterServlet extends HttpServlet {
     //Method to hash the password using SHA-256
     private String hashPassword(String password) {
         try{
-            //Get the MessageDigest instnace for SHA-256
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             
-            //Hash the password bytes
             byte[] hashBytes = digest.digest(password.getBytes());
             
-            //Convert the byte array info a hexadecimal string
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {
                 hexString.append(String.format("%02x", b));
             }
             
-            return hexString.toString(); //Return the hashed password as a hexadecimal string
+            return hexString.toString(); 
         }catch (NoSuchAlgorithmException e){
             e.printStackTrace();
-            return null; //Return null if an error occurs}
+            return null;
         }
     }
 }

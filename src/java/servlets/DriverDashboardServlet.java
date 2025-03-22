@@ -24,7 +24,6 @@ public class DriverDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         System.out.println("DriverDashboardServlet called");
 
-        // Ensure the user is logged in and is a driver
         User user = (session != null) ? (User) session.getAttribute("user") : null;
         if (user == null || user.getRole() != Role.driver) {  
             response.sendRedirect("login.jsp");
@@ -33,7 +32,6 @@ public class DriverDashboardServlet extends HttpServlet {
 
         int userId = user.getId();  
 
-        // Retrieve driverId using userId
         int driverId = DriverDAO.getDriverIdByUserId(userId);
         if (driverId == -1) {
             request.setAttribute("error", "No associated driver profile found.");
@@ -41,12 +39,10 @@ public class DriverDashboardServlet extends HttpServlet {
             return;
         }
 
-        // Retrieve cabId assigned to this driver
         int cabId = DriverDAO.getCabIdByDriver(driverId);
         if (cabId == -1) {
             request.setAttribute("error", "No cab assigned to you.");
         } else {
-            // Fetch assigned trips for the driver's cab
             List<Booking> bookings = BookingDAO.getBookingsForCab(cabId);
             request.setAttribute("bookings", bookings);
         }

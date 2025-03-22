@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>View Drivers</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -23,7 +22,6 @@
             margin-right: 25px;
         }
 
-        /* Modal Styling */
         #authorizationModal {
             display: none;
             position: fixed;
@@ -31,7 +29,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Overlay effect */
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -171,7 +169,7 @@
 
     <script>
         function openAuthorizationForm(driverId, name, phone, address) {
-            console.log("Opening modal for driver:", driverId); // Debugging
+            console.log("Opening modal for driver:", driverId); 
             $('#driverId').val(driverId);
             $('#name').val(name);
             $('#phone').val(phone);
@@ -179,7 +177,7 @@
 
             setTimeout(() => $('#username').focus(), 100);
 
-            $('#authorizationModal').fadeIn(); // Only opens when called
+            $('#authorizationModal').fadeIn(); 
         }
 
         function closeAuthorizationForm() {
@@ -187,12 +185,11 @@
             $('#authorizationModal').fadeOut();
         }
 
-        // Ensure modal does NOT show on page load
+        // To Ensure modal does not show on page load
         $(document).ready(function () {
-            $('#authorizationModal').hide(); // Force hide on page load
+            $('#authorizationModal').hide(); 
         });
 
-        // Close modal when clicking outside
         $(document).mouseup(function(e) {
             var modal = $(".modal-container");
             if (!modal.is(e.target) && modal.has(e.target).length === 0) {
@@ -202,7 +199,6 @@
 
     </script>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package dao;
 import utils.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import models.Cab;
 
@@ -143,33 +144,36 @@ public class CabDAO {
     }
 
     // Get available cabs by type
-    public static List<Cab> getAvailableCabsByType(String cabType) {
-        List<Cab> cabs = new ArrayList<>();
-        String query = "SELECT * FROM cabs WHERE cab_type = ? AND status = 'available'";
-    
+    public HashMap<String, List<Cab>> getAvailableCabsByType() {
+        HashMap<String, List<Cab>> cabsByType = new HashMap<>();
+        cabsByType.put("Sedan", new ArrayList<>());
+        cabsByType.put("Mini", new ArrayList<>());
+        cabsByType.put("SUV", new ArrayList<>());
+
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-    
-            pstmt.setString(1, cabType);
-            ResultSet rs = pstmt.executeQuery();
-    
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM cabs WHERE status = 'available'")) {
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                Integer driverId = rs.getObject("driver_id") != null ? rs.getInt("driver_id") : null;
                 Cab cab = new Cab(
-                    rs.getInt("cab_id"),
-                    rs.getString("cab_number"),
-                    rs.getString("model"),
-                    rs.getString("cab_type"),
-                    rs.getString("capacity"),
-                    rs.getString("status"),
-                    rs.getObject("driver_id") != null ? rs.getInt("driver_id") : null
-                );
-                cabs.add(cab);
+                        rs.getInt("cab_id"),
+                        rs.getString("cab_number"),
+                        rs.getString("model"),
+                        rs.getString("cab_type"),
+                        rs.getString("capacity"),
+                        rs.getString("status"),
+                        driverId
+                    );
+
+                if (cabsByType.containsKey(cab.getCabType())) {
+                    cabsByType.get(cab.getCabType()).add(cab);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return cabs;
+        return cabsByType;
     }
-
 }
     

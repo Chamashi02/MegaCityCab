@@ -1,5 +1,4 @@
 // LocationDAO.java
-
 package dao;
 
 import models.Location;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class LocationDAO {
 
-    // Method to fetch a single location based on the name
+    // fetch a single location based on the name
     public static Location getLocationByName(String name) {
         Location location = null;
         String query = "SELECT * FROM locations WHERE name = ?";
@@ -32,7 +31,7 @@ public class LocationDAO {
         return location;
     }
 
-    // Method to fetch all locations from the database
+    // fetch all locations from the database
     public static List<Location> getAllLocations() {
         List<Location> locations = new ArrayList<>();
         String query = "SELECT * FROM locations";

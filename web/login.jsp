@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body class="body-container">
+    <script>
+            window.onload = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('sessionExpired') && urlParams.get('sessionExpired') === 'true') {
+                    alert("Your session has expired. Please log in again.");
+                }
+            };
+        </script>
     <div class="form-container">
         <form action="LoginServlet" method="post">
             <h2 class="form-title">Login</h2>
@@ -18,9 +26,7 @@
 
             <input type="submit" name="submit" value="Login" class="form-button">
 
-            <!-- Optional error message section -->
             <div class="error-message">
-                <!-- Display error message if authentication fails -->
             </div> 
 
             <div class="register-link">

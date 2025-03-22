@@ -34,10 +34,7 @@
 
             <input type="submit" value="Register" class="form-button">
 
-            <!-- Optional error message section -->
-            <div class="error-message">
-                <!-- Display error message if authentication fails -->
-            </div>
+            <div class="error-message"></div>
             
             <div class="login-link">
                 <p>Already have an account? <a href="login.jsp">Login here</a></p>

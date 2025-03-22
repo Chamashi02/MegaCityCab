@@ -33,7 +33,6 @@ public class UserDAO {
                 String nic = rs.getString(8);
                 String roleStr = rs.getString(9);
 
-                // Convert role from String to Role enum
                 Role role = Role.valueOf(roleStr.toLowerCase());
 
                 User u = new User(id, name, userU, passU, email, phone, address, nic, role);
@@ -46,7 +45,7 @@ public class UserDAO {
         return usr;
     }
 
-    // Add method to get User by ID
+    // get User by ID
     public static User getUserById(int userId) {
         User user = null;
         try (Connection con = DBConnection.getConnection();
@@ -65,7 +64,6 @@ public class UserDAO {
                 String nic = rs.getString(8);
                 String roleStr = rs.getString(9);
 
-                // Convert role from String to Role enum
                 Role role = Role.valueOf(roleStr.toLowerCase());
 
                 user = new User(userId, name, userU, passU, email, phone, address, nic, role);

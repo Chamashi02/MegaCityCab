@@ -16,7 +16,6 @@ public class AuthorizeDriverServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        // Retrieve form parameters
         int driverId = Integer.parseInt(request.getParameter("driverId"));
         String name = request.getParameter("name");
         String username = request.getParameter("username");
@@ -27,7 +26,7 @@ public class AuthorizeDriverServlet extends HttpServlet {
         String nic = request.getParameter("nic");
         String role = "driver";
 
-        // Hash the password using SHA-256
+        // Hash the password 
         String hashedPassword = hashPassword(password);
         if (hashedPassword == null) {
             response.sendRedirect("viewDrivers?error=Error hashing password");
@@ -39,9 +38,8 @@ public class AuthorizeDriverServlet extends HttpServlet {
 
         try {
             con = DBConnection.getConnection();
-            con.setAutoCommit(false);  // Start transaction
+            con.setAutoCommit(false);  
 
-            // Insert the new user into the user table
             String sql = "INSERT INTO user (name, username, password, email, phonenumber, address, NIC, role) " +
                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -58,12 +56,11 @@ public class AuthorizeDriverServlet extends HttpServlet {
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Mark the driver as authorized
                 DriverDAO driverDAO = new DriverDAO();
                 boolean isAuthorized = driverDAO.authorizeDriver(driverId);
 
                 if (isAuthorized) {
-                    con.commit();  // Commit transaction if both operations succeed
+                    con.commit(); 
                     response.sendRedirect("viewDrivers?message=Driver Authorized Successfully");
                 } else {
                     con.rollback();
@@ -77,7 +74,7 @@ public class AuthorizeDriverServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                if (con != null) con.rollback();  // Rollback on error
+                if (con != null) con.rollback(); 
             } catch (Exception rollbackEx) {
                 rollbackEx.printStackTrace();
             }

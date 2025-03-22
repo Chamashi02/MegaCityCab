@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking History</title>
-    <link rel="stylesheet" href="css/bookTrip.css"> <!-- Using the same CSS file -->
+    <link rel="stylesheet" href="css/bookTrip.css"> 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -119,7 +119,6 @@
             background: #d4ac0d;
         }
 
-        /* Popup Modal */
         .modal {
             display: none;
             position: fixed;
@@ -190,7 +189,7 @@
                                 case "Cancelled": statusClass = "status-danger"; break;
                             }
                         %>
-                            <tr onclick="fetchCabDetails(<%= booking.getCabId() %>)">
+                            <tr onclick="fetchCabDetails(<%= booking.getCabId() %>, <%= booking.getEstimatedFare() %>, '<%= booking.getStatus() %>')">
                                 <td><%= booking.getBookingId() %></td>
                                 <td><%= booking.getCabType() %></td>
                                 <td><%= booking.getPickupLocation() %></td>
@@ -221,43 +220,62 @@
     </div>
 
     <script>
-        function fetchCabDetails(cabId) {
-            if (!cabId) {
-                document.getElementById("cabDetailsText").innerHTML = 
-                    "We're preparing your ride. A driver will be assigned to you soon.<br>Thank you for your patience.";
-                document.getElementById("cabDetailsModal").style.display = "block";
+        function fetchCabDetails(cabId, estimatedFare, status) {
+            let modalText = "";
+            if (!cabId || status.toLowerCase() === "cancelled") {modalText = "Your booking has been cancelled. No further details are available.";
+            } 
+            else if (status.toLowerCase() === "pending") {modalText = "We're preparing your ride. A driver will be assigned to you soon.<br>Thank you for your patience.";
+            } 
+            else if (status.toLowerCase() === "confirmed") {
+                fetch('GetCabDetailsServlet?cabId=' + cabId).then(response => response.text()).then(data => {
+                        if (data === "No Data Found" || data === "Error") {
+                            alert("Cab details not found!");
+                        } else {
+                            let details = data.split("|");
+                            modalText = 
+                                "<strong>Cab Number: </strong> " + details[0] + "<br>" +
+                                "<strong>Cab Type: </strong> " + details[1] + "<br>" +
+                                "<strong>Driver Name: </strong> " + details[2] + "<br>" +
+                                "<strong>Phone Number: </strong> " + details[3] + "<br>" + "<br>" +
+                                "<strong>Please pay <span style='color: #007bff;'>Rs." + estimatedFare + "</span> to your driver at dropoff.</strong>";
+                            document.getElementById("cabDetailsText").innerHTML = modalText;
+                            document.getElementById("cabDetailsModal").style.display = "block";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching cab details: ", error);
+                        alert("An error occurred while fetching cab details.");
+                    });
+                return;
+            } else if (status.toLowerCase() === "completed") {
+                fetch('GetCabDetailsServlet?cabId=' + cabId).then(response => response.text()).then(data => {
+                        if (data === "No Data Found" || data === "Error") {
+                            alert("Cab details not found!");
+                        } else {
+                            let details = data.split("|");
+                            modalText = 
+                                "<strong>Cab Number: </strong> " + details[0] + "<br>" +
+                                "<strong>Cab Type: </strong> " + details[1] + "<br>" +
+                                "<strong>Driver Name: </strong> " + details[2] + "<br>" +
+                                "<strong>Phone Number: </strong> " + details[3] + "<br>" + "<br>" +
+                                "Your Trip has Completed. Thank you for riding with us.";
+                            document.getElementById("cabDetailsText").innerHTML = modalText;
+                            document.getElementById("cabDetailsModal").style.display = "block";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching cab details: ", error);
+                        alert("An error occurred while fetching cab details.");
+                    });
                 return;
             }
-
-            console.log("Fetching details for Cab ID: " + cabId);
-
-            fetch('GetCabDetailsServlet?cabId=' + cabId)
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data); // Add this line to log the response from the server
-                    if (data === "No Data Found" || data === "Error") {
-                        alert("Cab details not found!");
-                    } else {
-                        let details = data.split("|");
-                        document.getElementById("cabDetailsText").innerHTML = 
-                            "<strong>Cab Number: </strong> " + details[0] + "<br>" +
-                            "<strong>Cab Type: </strong> " + details[1] + "<br>" +
-                            "<strong>Driver Name: </strong> " + details[2] + "<br>" +
-                            "<strong>Phone Number: </strong> " + details[3];
-                        document.getElementById("cabDetailsModal").style.display = "block";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching cab details: ", error);
-                    alert("An error occurred while fetching cab details.");
-                });
+            document.getElementById("cabDetailsText").innerHTML = modalText;
+            document.getElementById("cabDetailsModal").style.display = "block";
         }
-
 
         function closeModal() {
             document.getElementById("cabDetailsModal").style.display = "none";
         }
     </script>
-
 </body>
 </html>

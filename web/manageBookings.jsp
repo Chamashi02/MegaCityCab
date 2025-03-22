@@ -1,9 +1,16 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.BookingDAO"%>
 <%@page import="dao.CabDAO"%>
 <%@page import="models.Booking"%>
 <%@page import="models.Cab"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    CabDAO cabDAO = new CabDAO();
+    HashMap<String, List<Cab>> availableCabsByType = cabDAO.getAvailableCabsByType();
+    request.setAttribute("availableCabsByType", availableCabsByType);
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +95,7 @@
                                     <% if (booking.getCabId() == null && (statuses[i].equals("Cancelled") || statuses[i].equals("Completed"))) { %>
                                         <span class="badge bg-<%= colors[i] %>"><%= statuses[i] %></span> 
                                     <% } else if (booking.getCabId() == null) { %>
-                                        <button onclick="openPopup(<%= booking.getBookingId() %>)" class="btn btn-warning btn-sm">Assign</button>
+                                        <button onclick="openPopup(<%= booking.getBookingId() %>, '<%= booking.getCabType() %>')" class="btn btn-warning btn-sm">Assign</button>
                                     <% } else { %>
                                         <%= booking.getCabId() %>
                                     <% } %>
@@ -127,15 +134,14 @@
                 <div class="modal-body">
                     <form action="AssignCabServlet" method="post">
                         <input type="hidden" id="bookingId" name="bookingId">
+
                         <div class="mb-3">
                             <label for="cabId" class="form-label">Choose a Cab:</label>
                             <select name="cabId" id="cabId" class="form-select" required>
-                                <% List<Cab> availableCabs = new CabDAO().getAllCabs();
-                                   for (Cab cab : availableCabs) { %>
-                                <option value="<%= cab.getCabId() %>"><%= cab.getCabNumber() %> - <%= cab.getModel() %></option>
-                                <% } %>
+                                <option value="">Select a cab</option>
                             </select>
                         </div>
+
                         <button type="submit" name="action" value="assignCab" class="btn btn-primary">Assign Cab</button>
                     </form>
                 </div>
@@ -143,14 +149,46 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function openPopup(bookingId) {
+        var availableCabsByType = {
+            "Sedan": [
+                <% for (Cab cab : availableCabsByType.get("Sedan")) { %>
+                    { "cabId": "<%= cab.getCabId() %>", "cabNumber": "<%= cab.getCabNumber() %>", "model": "<%= cab.getModel() %>" },
+                <% } %>
+            ],
+            "Mini": [
+                <% for (Cab cab : availableCabsByType.get("Mini")) { %>
+                    { "cabId": "<%= cab.getCabId() %>", "cabNumber": "<%= cab.getCabNumber() %>", "model": "<%= cab.getModel() %>" },
+                <% } %>
+            ],
+            "SUV": [
+                <% for (Cab cab : availableCabsByType.get("SUV")) { %>
+                    { "cabId": "<%= cab.getCabId() %>", "cabNumber": "<%= cab.getCabNumber() %>", "model": "<%= cab.getModel() %>" },
+                <% } %>
+            ]
+        };
+
+        function openPopup(bookingId, cabType) {
             document.getElementById("bookingId").value = bookingId;
+            var cabDropdown = document.getElementById("cabId");
+
+            cabDropdown.innerHTML = '<option value="">Select a cab</option>';
+
+            if (availableCabsByType[cabType]) {
+                availableCabsByType[cabType].forEach(function(cab) {
+                    var option = document.createElement("option");
+                    option.value = cab.cabId;
+                    option.textContent = cab.cabNumber + " - " + cab.model;
+                    cabDropdown.appendChild(option);
+                });
+            }
+
             var myModal = new bootstrap.Modal(document.getElementById('cabPopup'));
             myModal.show();
         }
+
         
         function checkCabAssigned(bookingId) {
             var cabCell = document.querySelector("tr td button[onclick='openPopup(" + bookingId + ")']");
