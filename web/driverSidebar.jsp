@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<!-- Bootstrap & FontAwesome CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<!-- Custom CSS for Sidebar -->
 <style>
     .navbar-nav {
         --bs-nav-link-padding-x: 1rem;
@@ -37,8 +35,8 @@
     }
     
     .navbar-nav .nav-link:hover {
-        background-color: #ffffff; /* White background */
-        color: #4979ae !important; /* Primary text color */
+        background-color: #ffffff; 
+        color: #4979ae !important; 
         border-radius: 5px;
     }
     .sidebar-panel-name{

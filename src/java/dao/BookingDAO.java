@@ -28,7 +28,7 @@ public class BookingDAO {
             if (cabId != null) {
                 pst.setInt(7, cabId);
             } else {
-                pst.setNull(7, java.sql.Types.INTEGER);  // Handle null case for cabId
+                pst.setNull(7, java.sql.Types.INTEGER); 
             }
             pst.setDouble(8, booking.getEstimatedFare());
             pst.setDouble(9, booking.getDistance());
@@ -119,6 +119,24 @@ public class BookingDAO {
         
         return pendingCount;
     }
+    
+    public static int getActiveBookingCount() {
+        String query = "SELECT COUNT(*) AS confirmed_count FROM bookings WHERE status = 'confirmed'";
+        int confirmedCount = 0;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            
+            if (rs.next()) {
+                confirmedCount = rs.getInt("confirmed_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return confirmedCount;
+    }
 
     // Get bookings assigned to a specific cab
     public static List<Booking> getBookingsForCab(int cabId) {
@@ -172,7 +190,7 @@ public class BookingDAO {
                     rs.getString("pickup_time"),
                     rs.getString("status"),
                     rs.getInt("cab_id"),
-                    rs.getDouble("price"),  // Assuming "price" is equivalent to estimatedFare
+                    rs.getDouble("price"),  
                     rs.getDouble("distance")
                 );
                 bookingList.add(booking);

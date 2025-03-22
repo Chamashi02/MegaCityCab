@@ -7,7 +7,7 @@
     HttpSession userSession = request.getSession(false);
     User user = (User) userSession.getAttribute("user");
     if (user == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("login.jsp?sessionExpired=true");
         return;
     }
 %>
@@ -24,64 +24,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Request a Cab</title>
         <link rel="stylesheet" href="css/bookTrip.css"/>
-        <style>
-            /* Popup container - hidden by default */
-.popup {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    color: black;
-    background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-    overflow: auto; /* Enable scroll if needed */
-    padding-top: 60px; /* Position popup in the center */
-}
-
-/* Popup content */
-.popup-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-/* Close button */
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.popup h2 {
-    margin-top: 0;
-    font-size: 1.5em;
-    margin-bottom: 2rem;
-}
-
-.popup p {
-    font-size: 1.2em;
-    margin: 10px 0;
-    color: #555;
-}
-
-        </style>
     </head>
     <body>
+        <script>
+            window.onload = function () {
+                document.getElementById("pickupTime").value = minDateTime;
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('sessionExpired') && urlParams.get('sessionExpired') === 'true') {
+                    alert("Your session has expired. Please log in again.");
+                }
+            };
+        </script>
+
         <nav class="navbar">
             <div class="logo">Mega City Cabs</div>
             <div class="nav-links">
@@ -93,7 +47,7 @@
             </div>
         </nav>
         <section class="hero">
-            <h1>Request a Cab</h1>
+            <h1>Schedule your Rides with Us</h1>
             <p>Reliable and Comfortable Rides in Colombo</p>
         </section>
         <form id="bookingForm" action="BookingServlet" method="POST">
@@ -126,7 +80,7 @@
                 <input type="hidden" name="cabType" id="cabType" value="">
             </div>
             <label>Pickup Time:</label>
-            <input class="datetime-input" type="datetime-local" name="pickupTime" required>
+            <input class="datetime-input" type="datetime-local" name="pickupTime" id="pickupTime" required>
             <label>Pickup Location:</label>
             <select name="pickupLocation" id="pickupLocation">
                 <option value="">Select Pickup Location</option>
@@ -144,7 +98,8 @@
             </select>
             <button type="button" class="submit-btn" onclick="calculateFare()">Get Estimate</button>
         </div>
-            <!-- Custom Popup -->
+            
+        <!-- Custom Popup -->
         <div id="popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopup()">×</span>
@@ -152,7 +107,6 @@
                 <p>Distance:<strong> <span id="popupDistance">0</span> km</strong></p>
                 <p>Estimated Fare: <strong><span id="popupFare">0</span> LKR</strong></p>
 
-                <!-- Discount Info Section -->
                 <p id="discountMessage" style="color: green; font-weight: bold; margin-top: 2rem;"></p>
 
                 <button id="requestBookingBtn" type="button" onclick="submitBooking()">Request Booking</button>
@@ -184,7 +138,6 @@
                         console.log("🔵 Distance:", distance);
                         console.log("🔵 Estimated Fare:", estimatedFare);
 
-                        // Update the popup content with the fare estimate
                         document.getElementById("popupDistance").innerText = distance.toFixed(2);
                         document.getElementById("popupFare").innerText = estimatedFare.toFixed(2);
 
@@ -204,9 +157,8 @@
                         }
 
                         document.getElementById("discountMessage").innerText = discountMessage;
-                        document.getElementById("popupFare").innerText = estimatedFare.toFixed(2); // Update fare after discount
+                        document.getElementById("popupFare").innerText = estimatedFare.toFixed(2);
 
-                        // Show the popup
                         document.getElementById("popup").style.display = "block";
                     }
                 };
@@ -218,24 +170,19 @@
                 xhr.send(params);
             }
 
-
-            // Function to close the popup
             function closePopup() {
                 document.getElementById("popup").style.display = "none";
             }
 
-            // Function to Submit Booking
             function submitBooking() {
                 var form = document.getElementById("bookingForm");
 
-                // Append the 'action' parameter before submission
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
                 actionInput.name = "action";
                 actionInput.value = "requestBooking";
                 form.appendChild(actionInput);
 
-                // Submit the form
                 form.submit();
             }
         </script>

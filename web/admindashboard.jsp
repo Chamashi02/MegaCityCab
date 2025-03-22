@@ -18,12 +18,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard</title>
 
-    <!-- Bootstrap 5 & FontAwesome CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
 
     <style>
-        /* Adjust body to accommodate sidebar */
         .body-wrap {
             margin-left: 17%;
             margin-top: 1rem;
@@ -31,11 +29,10 @@
     </style>
 </head>
 <body id="page-top">
-    <!-- Include Sidebar -->
+
     <jsp:include page="sidebar.jsp" />
     
     <div class="body-wrap">
-        <!-- Main Content -->
         <div class="container-fluid mt-0">
             <h1 class="h3 mb-4 text-gray-800">WELCOME ADMIN</h1>
 
@@ -96,7 +93,9 @@
                                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                             Active Bookings
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <%= request.getAttribute("activeBookings") %>
+                                        </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
@@ -131,9 +130,6 @@
 
         </div>
     </div>
-    <!-- End of Main Content -->
-
-    <!-- Bootstrap & jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -41,13 +41,13 @@ public class GetCabDetailsServlet extends HttpServlet {
                 String cabType = rs.getString("cab_type");
                 String driverName = rs.getString("name");
                 String driverPhone = rs.getString("phone_number");
-                out.print(cabNumber + "|" + cabType + "|" + driverName + "|" + driverPhone);  // Pipe-separated data
+                out.print(cabNumber + "|" + cabType + "|" + driverName + "|" + driverPhone); 
             } else {
                 out.print("No Data Found");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            out.print("Error: " + e.getMessage());  // Send error details to the client for debugging
+            out.print("Error: " + e.getMessage());  
         } finally {
             try { if (rs != null) rs.close(); } catch (Exception ignored) {}
             try { if (pstmt != null) pstmt.close(); } catch (Exception ignored) {}

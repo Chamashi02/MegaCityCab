@@ -22,7 +22,7 @@ public class ViewCabsServlet extends HttpServlet {
         CabDAO cabDAO = new CabDAO();
         List<Cab> cabs = cabDAO.getAllCabs();
         
-        System.out.println("🟢 Retrieved " + cabs.size() + " cabs from DB."); // Debugging log
+        System.out.println("Retrieved " + cabs.size() + " cabs from DB."); 
 
         request.setAttribute("cabList", cabs);
         RequestDispatcher dispatcher = request.getRequestDispatcher("viewCabs.jsp");

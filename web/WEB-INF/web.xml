@@ -140,7 +140,7 @@
         <url-pattern>/GetCabDetailsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>30</session-timeout>
         <!-- Timeout after 30 minutes of inactivity -->
     </session-config>
 </web-app>

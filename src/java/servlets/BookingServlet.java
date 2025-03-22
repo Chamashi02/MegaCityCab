@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 public class BookingServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // Formatters for rounding
+    // rounding fare and distance
     private static final DecimalFormat distanceFormat = new DecimalFormat("#.#");
     private static final DecimalFormat fareFormat = new DecimalFormat("#.##");
 

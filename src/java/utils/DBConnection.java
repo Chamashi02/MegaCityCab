@@ -10,7 +10,6 @@ public class DBConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "Mashi@@##02";
     
-    //Load JDBC driver (only required for older versions of java)
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

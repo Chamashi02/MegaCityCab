@@ -23,7 +23,7 @@ public class User {
         this.role = role;
     }
 
-    public int getId() { // FIXED: This is the correct method to get user ID
+    public int getId() { 
         return id;
     }
 

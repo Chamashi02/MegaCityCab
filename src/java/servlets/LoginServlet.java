@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("uid");
         String password = request.getParameter("pass");
         
-        // Hash the entered password using SHA-256
+        // Hash the password using SHA-256
         String hashedPassword = hashPassword(password);
         
         List<User> userDetails = UserDAO.validate(username, hashedPassword);
@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
             
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            session.setAttribute("userId", user.getId()); // FIX: Use getId() instead of getUserId()
+            session.setAttribute("userId", user.getId());
 
             // Redirect based on role
             if (user.getRole().equals(Role.admin)) {
@@ -42,11 +42,12 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("DriverDashboardServlet");
             }
         } else {
-            response.sendRedirect("login.jsp?error=Invalid credentials");
+
+            response.getWriter().println("<script>alert('Invalid login Credencials'); window.location='login.jsp';</script>");
         }
     }
 
-    // Helper function to hash the password using SHA-256
+    // hash the password using SHA-256
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

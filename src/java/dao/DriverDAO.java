@@ -42,7 +42,7 @@ public class DriverDAO {
                     rs.getString("status"),
                     rs.getString("cab_number"), 
                     rs.getString("model"),
-                    rs.getBoolean("is_authorized")  // Fetch is_authorized
+                    rs.getBoolean("is_authorized") 
                 );
                 drivers.add(driver);
             }
@@ -150,7 +150,7 @@ public class DriverDAO {
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setBoolean(1, true); // Set is_authorized to true
+            pstmt.setBoolean(1, true); 
             pstmt.setInt(2, driverId);
 
             return pstmt.executeUpdate() > 0;
@@ -176,7 +176,7 @@ public class DriverDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Not found
+        return -1; 
     }
 
     // Get cab_id from driver_id
@@ -195,6 +195,6 @@ public class DriverDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Not found
+        return -1; 
     }
 }
